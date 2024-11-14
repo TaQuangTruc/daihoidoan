@@ -81,7 +81,7 @@ const LandingPage = () => {
         <Typography className="text-color ">
           Tỷ lệ có mặt:{" "}
           <span className="animated-value">
-            {(totalCheckIns / 200).toFixed(2)}%
+            {(totalCheckIns * 100 / 200).toFixed(2)}%
           </span>
         </Typography>
 
