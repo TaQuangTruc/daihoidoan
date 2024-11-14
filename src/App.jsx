@@ -7,6 +7,7 @@ import FileUpload from "./component/Loader";
 import CheckOutPage from "./pages/NewCheckOutPage";
 import "./App.css";
 import AdminPage from "./pages/AdminPage";
+import ListPage from "./pages/ListPage";
 
 function App() {
   const [showScanner, setShowScanner] = useState(true);
@@ -58,6 +59,11 @@ function App() {
       path: "/upload",
       element: <FileUpload />,
     },
+    {
+      
+      path: "/list",
+      element: <ListPage />,
+    }
   ]);
 
   return <RouterProvider router={router} />;

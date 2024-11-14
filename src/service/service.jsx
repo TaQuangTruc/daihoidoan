@@ -28,15 +28,23 @@ export const checkInUserByID = async (id) => {
       const attendanceData = snapshot.val();
       // Find the matching entry
       let updated = false;
+      let isCheckin = false;
+
       Object.keys(attendanceData).forEach((key) => {
         const record = attendanceData[key];
         if (record["MSCB_MSSV"].toString() === id.toString()) {
+          if (attendanceData[key].checkedIn != null) {
+            isCheckin = true;
+          }
           // Update the check-in status and QR code used
           attendanceData[key].checkedIn = true;
           updated = true;
         }
       });
 
+      if (isCheckin) {
+        return "Đại biểu đã check-in trước đó";
+      }
       if (updated) {
         // Push the updated attendance data back to Firebase
         await set(attendanceRef, attendanceData);
@@ -158,4 +166,32 @@ export const onAttendanceChinhThuc = (callback) => {
 
 export const onAttendanceDuKhuyet = (callback) => {
   onAttendanceByThanhPhan("Dự khuyết", callback);
+};
+
+export const getListOfAttendances = async (callback) => {
+  try {
+    const attendanceRef = ref(database, "/");
+    const snapshot = await get(attendanceRef);
+
+    console.log(JSON.stringify(snapshot));
+    if (snapshot.exists()) {
+      const attendanceData = snapshot.val();
+      let list = [];
+
+      Object.keys(attendanceData).forEach((key) => {
+        const record = attendanceData[key];
+        if (attendanceData[key].checkedIn != null) {
+          list.push({
+            hoVaTen: attendanceData[key].HoVaTen,
+            ms: record["MSCB_MSSV"],
+          });
+        }
+      });
+
+      return list;
+    }
+  } catch (error) {
+    console.error("Error during check-in:", error);
+    return "Failed to get data. Please try again.";
+  }
 };
