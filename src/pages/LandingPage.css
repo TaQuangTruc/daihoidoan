@@ -27,36 +27,81 @@
   -webkit-text-fill-color: transparent;
   animation: textclip 2s linear infinite;
   display: inline-block;
-  font-size: 20vw;
+  font-size: 9vw;
   position: absolute;
-  top: 50%;
-  left: 23.5%;
+  top: 49%;
+  left: 24%;
   transform: translate(-50%, -50%);
   margin: 0;
   padding: 0.5em;
   text-align: center;
 }
 
+.number-check-in {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: bold;
+  text-transform: uppercase;
+  background-image: linear-gradient(
+    -225deg,
+    #293a85 0%,
+    #3ab4e3 29%,
+    rgba(231, 54, 20, 1) 67%,
+    #f1881b 100%
+  );
+  background-size: 200% auto;
+  color: #fff;
+  background-clip: text;
+  text-fill-color: transparent;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: textclip 2s linear infinite;
+  display: inline-block;
+  font-size: 9vw;
+  position: absolute;
+  top: 24%;
+  left: 24%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+  padding: 0.5em;
+  text-align: center;
+}
+
+.number-check-in .MuiTypography-root {
+  font-family: 'Montserrat', sans-serif;
+  display: flex;
+  gap: 0.5em;
+  margin: 0;
+  padding: 0.5em;
+  text-align: left;
+  font-weight: bold
+}
+
+
+
+
 .right-info {
   font-family: 'Montserrat', sans-serif;
   font-weight: bold;
+  /* max-width: 50vw; */
+  width: 60%;
   text-transform: uppercase;
   display: flex;
   flex-direction: column;
   position: absolute;
   top: 50%;
-  right: -2%;
+  right: 1%;
   transform: translateY(-50%);
   color: #fff;
   font-size: 1.5vw;
-  gap: 1rem;
-  width: 60%;
+  gap: 0.5rem;
 }
 
 .pair-row {
   display: flex;
-  justify-content: left;
-  width: 92%;
+  justify-content: space-between;
+  /* max-width: 50vw; */
+  gap: 2em;
+  width: 100%;
 }
 
 .right-info p,
@@ -68,6 +113,19 @@
   padding: 0.5em;
   text-align: left;
   font-weight: bold
+}
+
+.text-color-check-in {
+  font-family: 'Montserrat', sans-serif;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  font-size: 23px !important;
+  letter-spacing: 0.01em !important;
+  text-shadow: 1px 1px 0 #f1881b, 3px 3px 0 #fff;
+  color: #e54325;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: bold;
 }
 
 .text-color {
