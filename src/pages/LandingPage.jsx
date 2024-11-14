@@ -70,19 +70,20 @@ const LandingPage = () => {
         alt="bg"
         style={{ display: "block", width: "100%", height: "auto" }}
       />
-      <Box
-        // className="layered-text teko-normal"
-        className="number-check-in"
-      >
-        <Typography className="text-color-check-in">
-          Số lượng đại biểu có mặt
-        </Typography>
-      </Box>
+
       <Box
         // className="layered-text teko-normal"
         className="animate-charcter"
       >
         {String(totalCheckIns).padStart(3, "0")}
+      </Box>
+      <Box
+        // className="layered-text teko-normal"
+        className="number-check-in"
+      >
+        <Typography className="text-color-check-in">
+          Đại biểu đã có mặt
+        </Typography>
       </Box>
       <Box className="right-info">
         {/* Single row for Tỷ lệ có mặt */}
