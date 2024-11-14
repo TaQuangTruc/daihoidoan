@@ -10,11 +10,7 @@ import {
   TextField,
 } from "@mui/material";
 import { QrReader } from "react-qr-reader";
-import {
-  checkInUserByID,
-  // handleCheckIn,
-  // storeQRData,
-} from "../service/service";
+import { checkInUserByID } from "../service/service";
 import { useTheme } from "@mui/material/styles";
 
 function CheckInPage({ showScanner, showSearch }) {
@@ -43,36 +39,31 @@ function CheckInPage({ showScanner, showSearch }) {
 
   const handleSubmit = async () => {
     const idToCheckIn = studentId || scannedData;
-    if (studentId != "") {
-      setScannedData(studentId);
+    if (!idToCheckIn) {
+      setStatusMessage("Please provide a valid ID.");
+      return;
+    }
+    const responseMessage = await checkInUserByID(idToCheckIn);
+    setStatusMessage(responseMessage);
+
+    if (studentId) {
       setTextDialogOpen(true);
     }
-    if (!idToCheckIn) {
-      setStatusMessage("Please provide a valid ID.");
-      return;
-    }
-    const responseMessage = await checkInUserByID(idToCheckIn);
-    setStatusMessage(responseMessage);
-  };
-
-  const handleCheckInClick = async () => {
-    const idToCheckIn = studentId || scannedData;
-    if (studentId != "") {
-      setScannedData(studentId);
-      setDialogOpen(true);
-    }
-    if (!idToCheckIn) {
-      setStatusMessage("Please provide a valid ID.");
-      return;
-    }
-
-    // Call the check-in function
-    const responseMessage = await checkInUserByID(idToCheckIn);
-    setStatusMessage(responseMessage);
   };
 
   const handleInputChange = (e) => {
     setStudentId(e.target.value);
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      handleSubmit();
+    }
+  };
+
+  const handleCloseTextDialog = () => {
+    setTextDialogOpen(false);
+    setStudentId(""); // Clear the input field
   };
 
   return (
@@ -92,7 +83,7 @@ function CheckInPage({ showScanner, showSearch }) {
           onResult={(result, error) => {
             if (result) {
               handleScanResult(result);
-              setError(null); // Open the dialog when a scan is successful
+              setError(null);
             }
             if (error) {
               handleError(error);
@@ -136,11 +127,12 @@ function CheckInPage({ showScanner, showSearch }) {
             variant="outlined"
             value={studentId}
             onChange={handleInputChange}
+            onKeyDown={handleKeyDown} // Listen for Enter key
             fullWidth
             margin="normal"
             InputProps={{
               style: {
-                color: isDarkTheme ? "#fff" : "#000", // Set input text color based on theme
+                color: isDarkTheme ? "#fff" : "#000",
               },
             }}
             sx={{
@@ -148,22 +140,22 @@ function CheckInPage({ showScanner, showSearch }) {
               margin: "16px auto 8px",
               "& .MuiOutlinedInput-root": {
                 "& fieldset": {
-                  borderColor: isDarkTheme ? "#fff" : "#000", // Default border color
+                  borderColor: isDarkTheme ? "#fff" : "#000",
                 },
                 "&:hover fieldset": {
-                  borderColor: isDarkTheme ? "#fff" : "#000", // Border color on hover
+                  borderColor: isDarkTheme ? "#fff" : "#000",
                 },
                 "&.Mui-focused fieldset": {
-                  borderWidth: "2px", // Increase border width on focus
+                  borderWidth: "2px",
                   borderImage:
-                    "linear-gradient(-225deg, #41c1ed 0%, #6fc7e9 100%) 1", // Gradient border on focus
+                    "linear-gradient(-225deg, #41c1ed 0%, #6fc7e9 100%) 1",
                 },
               },
               "& .MuiInputLabel-root": {
-                color: isDarkTheme ? "#fff" : "#000", // Label color based on theme
+                color: isDarkTheme ? "#fff" : "#000",
               },
               "& .MuiInputLabel-root.Mui-focused": {
-                color: isDarkTheme ? "#fff" : "#000", // Label color on focus
+                color: isDarkTheme ? "#fff" : "#000",
               },
             }}
           />
@@ -216,7 +208,7 @@ function CheckInPage({ showScanner, showSearch }) {
         <DialogActions>
           <Button onClick={() => setDialogOpen(false)}>Cancel</Button>
           <Button
-            onClick={handleCheckInClick}
+            onClick={handleSubmit}
             color="primary"
             variant="contained"
           >
@@ -230,7 +222,7 @@ function CheckInPage({ showScanner, showSearch }) {
         PaperProps={{
           sx: { minWidth: "400px" },
         }}
-        onClose={() => setTextDialogOpen(false)}
+        onClose={handleCloseTextDialog} // Close handler to clear input
       >
         <DialogTitle>Search for ID</DialogTitle>
         <DialogContent>
@@ -242,7 +234,7 @@ function CheckInPage({ showScanner, showSearch }) {
           )}
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setTextDialogOpen(false)}>Close</Button>
+          <Button onClick={handleCloseTextDialog}>Close</Button> {/* Clear input when closed */}
         </DialogActions>
       </Dialog>
     </Container>
