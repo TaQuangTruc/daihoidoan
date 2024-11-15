@@ -188,6 +188,7 @@ export const getListOfAttendances = async (callback) => {
         }
       });
 
+      console.log(JSON.stringify(list));
       return list;
     }
   } catch (error) {
@@ -195,3 +196,39 @@ export const getListOfAttendances = async (callback) => {
     return "Failed to get data. Please try again.";
   }
 };
+
+export const changeMaSo = async (newInfo, callback) => {
+  try {
+    const attendanceRef = ref(database, "/");
+    const snapshot = await get(attendanceRef);
+
+    console.log(JSON.stringify(snapshot));
+    if (snapshot.exists()) {
+      const attendanceData = snapshot.val();
+      // Find the matching entry
+      let updated = false;
+      let isCheckin = false;
+
+      Object.keys(attendanceData).forEach((key) => {
+        const record = attendanceData[key];
+        if (record["HoVaTen"].toString().inclules(newInfo.hoVaTen)) {
+          updated = true;
+          attendanceData[key]["MSCB_MSSV"] = newInfo.maSoMoi;
+        }
+      });
+
+      if (updated) {
+        await set(attendanceRef, attendanceData);
+        return "Đã cập nhật mã số thành công"
+      }
+      else {
+        return "Không tìm thấy tên đại biểu"
+      }
+    } else {
+      return "No data available.";
+    }
+  } catch (error) {
+    console.error("Error during check-in:", error);
+    return "Failed to check in. Please try again.";
+  }
+}

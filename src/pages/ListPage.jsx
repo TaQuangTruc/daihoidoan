@@ -1,4 +1,14 @@
-import { Button, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from "@mui/material";
+import {
+  Button,
+  Typography,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+} from "@mui/material";
 import { useEffect, useState } from "react";
 import { getListOfAttendances, resetDatabase } from "../service/service";
 
@@ -19,19 +29,24 @@ const ListPage = () => {
 
   useEffect(() => {
     getList();
-  }, [])
-
+  }, []);
 
   return (
     <div>
       {statusMessage && (
-        <Typography variant="body1" color="textSecondary" style={{ marginTop: "16px" }}>
+        <Typography
+          variant="body1"
+          color="textSecondary"
+          style={{ marginTop: "16px" }}
+        >
           {statusMessage}
         </Typography>
       )}
-      
-      <TableContainer component={Paper} style={{ marginTop: "20px" }}>
-        <Table>
+      <TableContainer
+        component={Paper}
+        style={{ maxHeight: "750px", overflow: "auto" }}
+      >
+        <Table stickyHeader>
           <TableHead>
             <TableRow>
               <TableCell>Họ và Tên</TableCell>
